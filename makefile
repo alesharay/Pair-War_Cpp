@@ -57,11 +57,11 @@ clean:
 #$(TST) $(TSTOBJS)
 
 app: all
-	./$(APP)
+	./$(APP) $(seed)
 
 #test: all
 #	./$(TST)
 
 run: all
-	./$(APP)
+	./$(APP) $(seed)
 #	./$(TST)
