@@ -11,14 +11,18 @@ using namespace std;
 class Player {
 
   private:
-    string nane;
-    int hand;
-    int newlyDrawnCard;
-    bool isWinner;
-    bool started;
-    bool exit;
+    string name = "";
+    int hand = 0;
+    int newlyDrawnCard = 0;
+    bool isWinner = false;
+    bool started = false;
+    bool exit = false;
 
   public: 
+    void setName(string name);
+
+    string getName();
+
     bool hasStarted();
 
     void setStartedRound(bool started);
