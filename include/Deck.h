@@ -18,11 +18,9 @@ class Deck {
 
     void shuffleCards();
 
-    void dealCards();
-
     int size();
 
-    bool push(int card);
+    void push(int card);
 
     int pop();
 

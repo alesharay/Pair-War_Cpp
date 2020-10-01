@@ -28,7 +28,6 @@ int main(int argc, char *argv[]){
    pFile = fopen("log.txt", "a"); // open the log file 
    parseArgs(argv);               // parse args from console   
    randSeed();                    // seed rand() with arg from command line
-  cards.loadDeck();               // populate the card deck
 
    while( roundNum <= numberOfRounds ){
       playRound();                // launch a round
@@ -53,8 +52,7 @@ void randSeed(){ // seed rand() using arg x from the command line
 } // end function
 
 void playRound(){ // launch dealer and player threads for the current round
-   cards.showDeck();
-   cout << endl;
+  cards.loadDeck();               // populate the card deck
 
    printf("ROUND: %d ................\n", roundNum);
    fprintf(pFile, "ROUND: %d ................\n", roundNum);
@@ -149,15 +147,13 @@ void useTheDeck(long pId, hand thisHand){
       fprintf(pFile, "PLAYER %ld: hand %d \n", pId, thisHand.card1);
       
       // draw a card
-      // thisHand.card2 = *topOfDeck, 
-      // topOfDeck = topOfDeck + 1;
 
       thisHand.card2 = cards.pop();
 
       fprintf(pFile, "PLAYER %ld: draws %d \n", pId,thisHand.card2); 
       
       // show hand     
-      printf("HAND %d %d\n", thisHand.card1, thisHand.card2);
+      printf("PLAYER %ld:\nHAND %d %d\n",pId, thisHand.card1, thisHand.card2);
       fprintf(pFile, "PLAYER %ld: hand %d %d\n", pId, thisHand.card1, thisHand.card2);        
             
       // compare the cards
@@ -172,26 +168,16 @@ void useTheDeck(long pId, hand thisHand){
          // if the cards don't match, then discard a card            
          printf("WIN no\n");    
 
-         // shift cards in deck to make room for discard
-        //  topOfDeck = topOfDeck - 1;       
-        //  int *ptr = topOfDeck;
-        //  while( ptr != bottomOfDeck ){
-        //     *ptr = *(ptr + 1);
-        //     ptr = ptr + 1;      
-        //  }         
-
          // randomly select discard and put it back in the deck
-        //  int discard = rand()%2;
          if( rand()%2 ){
             fprintf(pFile, "PLAYER %ld: discards %d \n", pId, thisHand.card1);   
 
-            // *bottomOfDeck = thisHand.card1;  // put card back in deck
             cards.push(thisHand.card1);
             thisHand.card1 = thisHand.card2; // set card1 to remaining card value
          }     
          else{
             fprintf(pFile, "PLAYER %ld: discards %d \n", pId, thisHand.card2);             
-            // *bottomOfDeck = thisHand.card2;
+            cards.push(thisHand.card2);
          }   
          // print the contents of the deck
         cards.showDeck();                
@@ -204,11 +190,6 @@ void useTheDeck(long pId, hand thisHand){
 
 
 void dealCards(){ // the dealer deals one card into each hand
-  //  hand1.card1 = *topOfDeck; topOfDeck = topOfDeck + 1; 
-  //  hand2.card1 = *topOfDeck; topOfDeck = topOfDeck + 1;  
-  //  hand3.card1 = *topOfDeck; topOfDeck = topOfDeck + 1;   
-
-
   hand1.card1 = cards.pop();      
   hand2.card1 = cards.pop();      
   hand3.card1 = cards.pop();      
