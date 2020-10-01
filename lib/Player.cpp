@@ -4,15 +4,14 @@ using namespace std;
 
 Player::Player() {}
 
-Player::Player(Deck &cards, string name) {
-  this->cards = cards;
+Player::Player(string name) {
   this->name = name;
 }
 
-void* Player::run(void *playerId) {
+void* Player::run(void *playerId, Deck &cards) {
 
     pId = (long)playerId;
-    Player currentPlayer(cards, "");
+    Player currentPlayer("");
 
     if( roundNum == 1) {
 
@@ -29,7 +28,7 @@ void* Player::run(void *playerId) {
          }
          if( win == 0 ){   
             // useTheDeck(pId, thisHand); // let players use the deck
-            accessDeck();
+            accessDeck(cards);
          }         
       pthread_mutex_unlock(&mutex_useDeck); // unlock the deck ...........
    }
@@ -41,36 +40,36 @@ void* Player::run(void *playerId) {
 
 void Player::setHand(int card) {
   hand = card;
-  printf("PLAYER %d:\nHAND %d\n", pId, hand);
+  printf("----PLAYER %ld:\nHAND %d\n", pId, hand);
   fprintf(pFile, "PLAYER %ld: hand %d\n", pId, hand);
 }
 
-void Player::accessDeck() {
-  drawCard();
+void Player::accessDeck(Deck &cards) {
+  drawCard(cards);
   displayHand();
   printHandToFile();
-  compareCards();
+  compareCards(cards);
 }
 
 void Player::displayHand() {
-  printf("PLAYER %ld:\nHAND %d %d\n", pId, hand, newlyDrawnCard);
+  printf("----PLAYER %ld:\nHAND %d %d\n", pId, hand, newlyDrawnCard);
 }
 
 void Player::printHandToFile() {
   fprintf(pFile, "PLAYER %ld: hand %d %d\n", pId, hand, newlyDrawnCard);
 }
 
-void Player::drawCard() {
+void Player::drawCard(Deck &cards) {
   newlyDrawnCard = cards.pop();
   fprintf(pFile, "PLAYER %ld: draws %d \n", pId, newlyDrawnCard); 
 }
 
-void Player::discard(int card) {
+void Player::discard(Deck &cards, int card) {
   cards.push(card);
   fprintf(pFile, "PLAYER %ld: discards %d \n", pId, card);   
 }
 
-void Player::compareCards() {
+void Player::compareCards(Deck &cards) {
   if( hand == newlyDrawnCard ) {
     printf("WIN yes\n");      
     fprintf(pFile, "PLAYER %ld: wins\n", pId);
@@ -79,11 +78,11 @@ void Player::compareCards() {
   } else {
     printf("Win no\n");
     if( rand() % 2 ) {
-      discard( newlyDrawnCard );  
+      discard( cards, newlyDrawnCard );  
     } else {
       int temp = hand;
       hand = newlyDrawnCard;
-      discard( temp ); 
+      discard( cards, temp ); 
     }
     cards.showDeck();
   }

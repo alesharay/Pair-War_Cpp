@@ -1,5 +1,3 @@
-#pragma once
-
 #include <iostream>
 #include <pthread.h>
 #include <stdio.h>
@@ -37,7 +35,12 @@ void Deck::shuffleCards() {
 
 // <<<<<<<< PUSH >>>>>>>>
 void Deck::push(int card) {
-  tableCards[size()-1] = card;
+  for( int i = 0, deck_size; size(); ++i ) {
+    if( tableCards[i] == -1 ) { 
+      tableCards[i] = card;
+      break;
+    }
+  }
 } // end push
 
 // <<<<<<<< POP >>>>>>>>
@@ -67,8 +70,10 @@ void Deck::showDeck() {
   printf("DECK: ");
   fprintf(pFile, "DECK: ");   
 
-  for( int i = 0; i < size(); ++i) {
+  bool emptySlotFound = false; 
+  for( int i = 0, deck_size = size(); i < deck_size; ++i) {
     if( tableCards[i] == -1 ) {
+      emptySlotFound = true;
       printf("\n");
       fprintf(pFile, "\n");
       break;
@@ -77,4 +82,6 @@ void Deck::showDeck() {
       fprintf( pFile, "%d ", tableCards[i] );
     }
   }
+
+  if( !emptySlotFound ) printf("\n");
 } // end showDeck

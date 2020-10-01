@@ -14,8 +14,8 @@ struct hand{               // a hand container for each player
 
 hand hand1, hand2, hand3;  // hands for the players 
 Deck cards;
-Player player1( cards, "PLAYER 1" ), player2( cards, "PLAYER 2" ), player3( cards, "PLAYER 3" );
-Dealer dealer( cards, player1, player2, player3);
+Player player1( "PLAYER 1" ), player2( "PLAYER 2" ), player3( "PLAYER 3" );
+Dealer dealer(player1, player2, player3);
 
 
 // function prototypes =========================================================
@@ -148,7 +148,8 @@ void *player_threads(void *playerId){ // this function is for player threads
 // void useTheDeck(hand thisHand){
 void useTheDeck(long pId, hand thisHand){
    if( pId == 0 ){ // dealer uses the deck......................................   
-      fprintf(pFile, "DEALER: shuffle\n"); cards.shuffleCards(); // shuffle the deck    
+      fprintf(pFile, "DEALER: shuffle\n"); dealer.shuffleCards(cards); // shuffle the deck
+      cards.showDeck();
 
       fprintf(pFile, "DEALER: deal\n"); dealCards();      // deal the cards
    }    
@@ -164,7 +165,7 @@ void useTheDeck(long pId, hand thisHand){
       fprintf(pFile, "PLAYER %ld: draws %d \n", pId,thisHand.card2); 
       
       // show hand     
-      printf("PLAYER %ld:\nHAND %d %d\n",pId, thisHand.card1, thisHand.card2);
+      printf("----PLAYER %ld:\nHAND %d %d\n",pId, thisHand.card1, thisHand.card2);
       fprintf(pFile, "PLAYER %ld: hand %d %d\n", pId, thisHand.card1, thisHand.card2);        
             
       // compare the cards
@@ -191,11 +192,13 @@ void useTheDeck(long pId, hand thisHand){
             cards.push(thisHand.card2);
          }   
          // print the contents of the deck
-        cards.showDeck();                
       }      
    }  
    turn ++; // inc turn so next player may use the deck
-   if( turn > NUM_THREADS ) turn = 1;      // if player3 went, move to player1
+   if( turn > NUM_THREADS ) {
+     cards.showDeck();                
+     turn = 1;      // if player3 went, move to player1
+   }
    pthread_cond_broadcast(&condition_var); // broadcast that deck is available
 } // end function
 

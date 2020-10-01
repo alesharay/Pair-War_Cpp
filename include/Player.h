@@ -15,27 +15,26 @@ class Player {
   public:
     Player();
 
-    Player(Deck &cards, string name);
+    Player(string name);
 
-    void *run(void *playerId);
+    void *run(void *playerId, Deck &cards);
 
     void setHand(int card); 
 
-    void accessDeck();
+    void accessDeck(Deck &cards);
 
     void displayHand();
 
     void printHandToFile();
 
-    void drawCard();
+    void drawCard(Deck &cards);
 
-    void discard(int card);
+    void discard(Deck &cards, int card);
 
-    void compareCards();
+    void compareCards(Deck &cards);
 
   private:
     string name;
-    Deck cards;
     int hand = -1;
     int newlyDrawnCard = -1;
     bool started = false; 

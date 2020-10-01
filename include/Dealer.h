@@ -1,7 +1,7 @@
 #pragma once
 
 #include "globals.h"
-#include "Deck.h"
+//#include "Deck.h"
 #include "Player.h"
 
 #include <pthread.h>
@@ -16,13 +16,12 @@ class Dealer {
   public:
     Dealer();
 
-    Dealer(Deck &cards, Player &player1, Player &player2, Player &player3);
+    Dealer(Player &player1, Player &player2, Player &player3);
 
-    void dealCards();
+    void dealCards(Deck &cards);
 
-    void shuffleCards();
+    void shuffleCards(Deck &cards);
 
   private:
-    Deck cards;
     Player player1, player2, player3;
 };
