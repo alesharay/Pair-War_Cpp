@@ -8,35 +8,7 @@ Player::Player(string name) {
   this->name = name;
 }
 
-void* Player::run(void *playerId, Deck &cards) {
 
-    pId = (long)playerId;
-    Player currentPlayer("");
-
-    if( roundNum == 1) {
-
-    } else if( roundNum == 2) {
-
-    } else if( roundNum == 3 ) {
-
-    } 
-
-     while( win == 0 ){
-      pthread_mutex_lock(&mutex_useDeck); // lock the deck ...............  
-         while( pId != turn && win == 0 ){ // make players wait for their turn
-            pthread_cond_wait(&condition_var, &mutex_useDeck); 
-         }
-         if( win == 0 ){   
-            // useTheDeck(pId, thisHand); // let players use the deck
-            accessDeck(cards);
-         }         
-      pthread_mutex_unlock(&mutex_useDeck); // unlock the deck ...........
-   }
-   // leave the player thread
-   fprintf(pFile, "PLAYER %ld: exits round\n", pId); 
-
-   pthread_exit(NULL);  
-}
 
 void Player::setHand(int card) {
   hand = card;
@@ -86,4 +58,34 @@ void Player::compareCards(Deck &cards) {
     }
     cards.showDeck();
   }
+}
+
+void* Player::run(void *playerId, Deck &cards) {
+
+    pId = (long)playerId;
+    Player currentPlayer("");
+
+    if( roundNum == 1) {
+
+    } else if( roundNum == 2) {
+
+    } else if( roundNum == 3 ) {
+
+    } 
+
+     while( win == 0 ){
+      pthread_mutex_lock(&mutex_useDeck); // lock the deck ...............  
+         while( pId != turn && win == 0 ){ // make players wait for their turn
+            pthread_cond_wait(&condition_var, &mutex_useDeck); 
+         }
+         if( win == 0 ){   
+            // useTheDeck(pId, thisHand); // let players use the deck
+            accessDeck(cards);
+         }         
+      pthread_mutex_unlock(&mutex_useDeck); // unlock the deck ...........
+   }
+   // leave the player thread
+   fprintf(pFile, "PLAYER %ld: exits round\n", pId); 
+
+   pthread_exit(NULL);  
 }

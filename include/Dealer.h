@@ -22,6 +22,10 @@ class Dealer {
 
     void shuffleCards(Deck &cards);
 
+    void accessDeck(Deck &cards);
+
+    void* run(void *arg, Deck &cards);
+
   private:
     Player player1, player2, player3;
 };

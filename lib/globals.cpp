@@ -25,8 +25,6 @@
  int some_value = 1;        // TESTING ONLYxxxxxxxxxxxxxxxxxxxxxxx  
  int turn = 0;              // keep track of whose turn it is
  //int const NUM_CARDS = 52;  // number of cards in the deck 
- int *topOfDeck;            // point to top of deck
- int *bottomOfDeck;         // point to bottom of deck
  int seed = 0;              // the seed for rand() passed from command line   
  bool win = false;          // flag to indicate a player has won
  long pId = 0;              // identify the player
