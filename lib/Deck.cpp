@@ -28,7 +28,7 @@ int Deck::size() {
 // <<<<<<<< SHUFFLECARDS >>>>>>>>
 void Deck::shuffleCards() {
   for( int i = 0; i < size()-1; ++i ) {
-    int randomIndex = i + (rand() % (size() - i));
+    int randomIndex = rand() % size();
     int temp = tableCards[i];
     tableCards[i] = tableCards[randomIndex];
     tableCards[randomIndex] = temp;
