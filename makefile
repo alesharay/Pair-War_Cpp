@@ -34,15 +34,14 @@ LFLAGS  = -L lib $(LIB)
 .PHONY: all clean app test run
 
 # Explicit targets to follow ---------------------------------------------
-all: $(APP) 
-#(LIB) $(TST)
+all: $(APP) $(LIB)
+#$(TST)
 
-#$(LIB): $(LIBOBJS)
-#	$(AR) rvs $(LIB) $(LIBOBJS)
+$(LIB): $(LIBOBJS)
+	$(AR) rvs $(LIB) $(LIBOBJS)
 
-$(APP): $(APPOBJS) #$(LIB)
-	$(CPP) -o $(APP) $(APPOBJS) -pthread
-#$(LFLAGS)
+$(APP): $(APPOBJS) $(LIB)
+	$(CPP) -o $(APP) $(APPOBJS) -pthread $(LFLAGS)
 
 #$(TST): $(LIB) $(TSTOBJS)
 #	$(CPP) -o $(TST) $(TSTOBJS) $(LFLAGS)
