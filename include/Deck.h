@@ -24,6 +24,10 @@ class Deck {
 
     int pop();
 
+    int get(int index);
+
+    void set(int index, int card); 
+
     void showDeck();
 
   private:

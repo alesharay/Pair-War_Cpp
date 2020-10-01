@@ -1,5 +1,7 @@
 // library links ===============================================================
-#include "Deck.h"
+// #include "Player.h"
+#include "Dealer.h"
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,13 +11,17 @@
 struct hand{               // a hand container for each player 
    int card1, card2;
 };
+
 hand hand1, hand2, hand3;  // hands for the players 
 Deck cards;
+Player player1( cards, "PLAYER 1" ), player2( cards, "PLAYER 2" ), player3( cards, "PLAYER 3" );
+Dealer dealer( cards, player1, player2, player3);
 
 
 // function prototypes =========================================================
 void *dealer_thread(void *arg);
 void *player_threads(void *playerId);
+// void useTheDeck(hand);
 void useTheDeck(long, hand);
 void randSeed();
 void dealCards(); //-------------------dealCards()
@@ -78,9 +84,11 @@ void playRound(){ // launch dealer and player threads for the current round
 
 void *dealer_thread(void *arg){ // this function is for the dealer thread
 
-   long pId = 0;       // identify the dealer as player 0
+   pId = 0;       // identify the dealer as player 0
+  //  long pId = 0;       // identify the dealer as player 0
    turn = 0;           // set/reset turn val to indicate it's the dealer's turn 
    hand dealerHand;    // dealer gets a NULL hand
+  //  useTheDeck(dealerHand); // let the dealer use the deck
    useTheDeck(pId, dealerHand); // let the dealer use the deck
    
 
@@ -98,6 +106,7 @@ void *dealer_thread(void *arg){ // this function is for the dealer thread
 
 void *player_threads(void *playerId){ // this function is for player threads
 
+  //  pId = (long)playerId;
    long pId = (long)playerId;
    
    // assign hands to players based on which round is being played   
@@ -108,14 +117,14 @@ void *player_threads(void *playerId){ // this function is for player threads
       else thisHand = hand3;
    } 
    else if( roundNum == 2 ){
-      if( pId == 2 ) thisHand = hand1; 
-      else if( pId == 3 ) thisHand = hand2;
-      else thisHand = hand3;
+      if( pId == 2 ) thisHand = hand2; 
+      else if( pId == 3 ) thisHand = hand3;
+      else thisHand = hand1;
    }    
    else if( roundNum == 3 ){
-      if( pId == 3 ) thisHand = hand1; 
-      else if( pId == 1 ) thisHand = hand2;
-      else thisHand = hand3;
+      if( pId == 3 ) thisHand = hand3; 
+      else if( pId == 1 ) thisHand = hand1;
+      else thisHand = hand2;
    }   
    
    while( win == 0 ){
@@ -124,6 +133,7 @@ void *player_threads(void *playerId){ // this function is for player threads
             pthread_cond_wait(&condition_var, &mutex_useDeck); 
          }
          if( win == 0 ){   
+            // useTheDeck(thisHand); // let players use the deck
             useTheDeck(pId, thisHand); // let players use the deck
          }         
       pthread_mutex_unlock(&mutex_useDeck); // unlock the deck ...........
@@ -135,6 +145,7 @@ void *player_threads(void *playerId){ // this function is for player threads
 } // end function
 
 
+// void useTheDeck(hand thisHand){
 void useTheDeck(long pId, hand thisHand){
    if( pId == 0 ){ // dealer uses the deck......................................   
       fprintf(pFile, "DEALER: shuffle\n"); cards.shuffleCards(); // shuffle the deck    

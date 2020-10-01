@@ -52,7 +52,16 @@ int Deck::pop() {
   return card;
 } // end pop
 
-   
+// <<<<<<<< GET >>>>>>>>
+int Deck::get(int index) {
+  return tableCards[index];
+} // end get
+
+// <<<<<<<< SET >>>>>>>>
+void Deck::set(int index, int card) {
+  tableCards[index] = card;
+} // end set
+
 // <<<<<<<< SHOWDECK >>>>>>>>
 void Deck::showDeck() {
   printf("DECK: ");
