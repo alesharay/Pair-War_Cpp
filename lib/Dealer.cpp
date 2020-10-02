@@ -2,9 +2,12 @@
 
 using namespace std;
 
-Dealer::Dealer(){}
+Dealer::Dealer(Deck &cards) {
+  this->cards = cards;
+}
 
-Dealer::Dealer(Player &player1, Player &player2, Player &player3) {
+Dealer::Dealer(Deck &cards, Player &player1, Player &player2, Player &player3) {
+  this->cards = cards;
   this->player1 = player1;
   this->player1 = player2;
   this->player1 = player3;
@@ -27,16 +30,16 @@ void Dealer::shuffleCards(Deck &cards) {
   }
 }
 
-void Player::accessDeck(Deck &cards) {
+void Dealer::accessDeck(Deck &cards) {
   shuffleCards(cards);
-  deal(cards);
+  dealCards(cards);
 }
 
-void* Dealer::run(void *arg, Deck &cards) {
+void Dealer::run() {
    pId = 0;       // identify the dealer as player 0
    turn = 0;           // set/reset turn val to indicate it's the dealer's turn 
-   hand dealerHand;    // dealer gets a NULL hand
-   useTheDeck(pId, dealerHand); // let the dealer use the deck
+  //  hand dealerHand;    // dealer gets a NULL hand
+  //  useTheDeck(pId, dealerHand); // let the dealer use the deck
    
    accessDeck(cards);
 

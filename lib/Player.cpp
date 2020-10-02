@@ -2,13 +2,11 @@
 
 using namespace std;
 
-Player::Player() {}
+Player::Player() { }
 
 Player::Player(string name) {
   this->name = name;
 }
-
-
 
 void Player::setHand(int card) {
   hand = card;
@@ -60,10 +58,7 @@ void Player::compareCards(Deck &cards) {
   }
 }
 
-void* Player::run(void *playerId, Deck &cards) {
-
-    pId = (long)playerId;
-    Player currentPlayer("");
+void Player::run() {
 
     if( roundNum == 1) {
 
@@ -80,7 +75,7 @@ void* Player::run(void *playerId, Deck &cards) {
          }
          if( win == 0 ){   
             // useTheDeck(pId, thisHand); // let players use the deck
-            accessDeck(cards);
+            // accessDeck(cards);
          }         
       pthread_mutex_unlock(&mutex_useDeck); // unlock the deck ...........
    }

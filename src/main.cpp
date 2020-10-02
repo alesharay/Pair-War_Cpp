@@ -15,7 +15,7 @@ struct hand{               // a hand container for each player
 hand hand1, hand2, hand3;  // hands for the players 
 Deck cards;
 Player player1( "PLAYER 1" ), player2( "PLAYER 2" ), player3( "PLAYER 3" );
-Dealer dealer(player1, player2, player3);
+Dealer dealer(cards, player1, player2, player3);
 
 
 // function prototypes =========================================================
