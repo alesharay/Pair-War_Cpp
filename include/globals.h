@@ -1,4 +1,4 @@
-#pragma once
+// #pragma once
 
 #include <pthread.h>
 #include <stdio.h>
@@ -24,8 +24,11 @@ extern int roundNum;          // keep track of which round it is
 extern int numberOfRounds;    // select how many rounds to play
 extern int some_value;        // TESTING ONLYxxxxxxxxxxxxxxxxxxxxxxx  
 extern int turn;              // keep track of whose turn it is
-extern int deck[NUM_CARDS];       // a card deck for shuffling and dealing
 extern int *topOfDeck;            // point to top of deck
 extern int *bottomOfDeck;         // point to bottom of deck
 extern int seed;              // the seed for rand() passed from command line   
 extern bool win;          // flag to indicate a player has won
+extern long pId;          // identify player
+
+
+// extern void useTheDeck(hand thisHand);

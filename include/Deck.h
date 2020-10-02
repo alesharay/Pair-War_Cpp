@@ -1,5 +1,3 @@
-#pragma once
-
 #include "globals.h"
 
 #include <iostream>
@@ -14,17 +12,20 @@ using namespace std;
 class Deck {
 
   public:
+
     void loadDeck();
 
     void shuffleCards();
 
-    void dealCards();
-
     int size();
 
-    bool push(int card);
+    void push(int card);
 
     int pop();
+
+    int get(int i);
+
+    void set(int i, int card);
 
     void showDeck();
 
