@@ -6,9 +6,8 @@ Player::Player(Deck &cards, int ID) : card_deck(cards), id(ID) { }
 
 void Player::setHand(int card) {
   hand = card;
-  printf("----PLAYER %d:\nHAND %d\n", id, hand);
+  printf("----PLAYER %d: HAND %d\n", id, hand);
   fprintf(pFile, "PLAYER %d: hand %d\n", id, hand);
-
 }
 
 void Player::accessDeck() {
@@ -51,7 +50,10 @@ void Player::compareCards( ) {
     pthread_cond_signal(&cond_win1); // signal dealer to exit           
   } else {
     printf("Win no\n");
-    if( rand() % 2 ) {
+    if( hand = -1 ) {
+      discard( hand );
+      hand = newlyDrawnCard;
+    } else if( rand() % 2 ) {
       discard( newlyDrawnCard );  
     } else {
       int temp = hand;

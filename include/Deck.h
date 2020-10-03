@@ -1,10 +1,9 @@
 #include "globals.h"
 
-#include <iostream>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <vector>
+#include <iostream>
 #include <fstream>
 
 using namespace std;
@@ -33,6 +32,6 @@ class Deck {
 
   private:
 
-    int tableCards[52];
+    int tableCards[NUM_CARDS];
 
 };
