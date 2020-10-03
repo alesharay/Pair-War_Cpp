@@ -2,6 +2,7 @@
 
 #include "globals.h"
 #include "Deck.h"
+#include "pthreads_Class.h"
 
 #include <pthread.h>
 #include <stdio.h>
@@ -9,34 +10,37 @@
 #include <fstream>         // for writing to the log 
 #include <iostream>
 
+
+
 using namespace std;
 
-class Player {
+class Player : public pthreads_Class {
   public:
-    Player();
 
-    Player(string name);
-
-    void *run(void *playerId, Deck &cards);
+    Player(Deck &cards, int ID);
 
     void setHand(int card); 
 
-    void accessDeck(Deck &cards);
+    void accessDeck();
 
     void displayHand();
 
     void printHandToFile();
 
-    void drawCard(Deck &cards);
+    void drawCard();
 
-    void discard(Deck &cards, int card);
+    void discard( int card );
 
-    void compareCards(Deck &cards);
+    void compareCards();
+
+    void resetHand();
+
+    void run();
 
   private:
-    string name;
     int hand = -1;
     int newlyDrawnCard = -1;
+    int id; 
     bool started = false; 
-
+    Deck &card_deck;
 };

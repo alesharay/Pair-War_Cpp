@@ -1,7 +1,6 @@
 #pragma once
 
 #include "globals.h"
-//#include "Deck.h"
 #include "Player.h"
 
 #include <pthread.h>
@@ -12,20 +11,21 @@
 
 using namespace std;
 
-class Dealer {
+class Dealer : public pthreads_Class {
   public:
-    Dealer();
+    
+    Dealer(Deck &cards, Player &player_1, Player &player_2, Player &player_3);
+    // void getNewCards(Deck &cards);
 
-    Dealer(Player &player1, Player &player2, Player &player3);
+    void dealCards();
 
-    void dealCards(Deck &cards);
+    void shuffleCards();
 
-    void shuffleCards(Deck &cards);
+    void accessDeck();
 
-    void accessDeck(Deck &cards);
-
-    void* run(void *arg, Deck &cards);
+    void run();
 
   private:
-    Player player1, player2, player3;
+    Deck &card_deck;
+    Player &player1, player2, player3;
 };

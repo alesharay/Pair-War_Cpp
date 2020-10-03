@@ -13,6 +13,8 @@ class Deck {
 
   public:
 
+    Deck();
+
     void loadDeck();
 
     void shuffleCards();
