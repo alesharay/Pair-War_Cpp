@@ -8,6 +8,9 @@
 #include "Deck.h"
 
 using namespace std;
+Deck::Deck() {
+  loadDeck();
+}
 
 // <<<<<<<< LOADDECK >>>>>>>>
 void Deck::loadDeck() {
@@ -46,7 +49,7 @@ void Deck::push(int card) {
 // <<<<<<<< POP >>>>>>>>
 int Deck::pop() {
   int card = tableCards[0];
-  
+
   for( int i = 0; i < size()-1; ++i ) {
     tableCards[i] = tableCards[i+1];
   }

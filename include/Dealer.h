@@ -15,6 +15,7 @@ class Dealer : public pthreads_Class {
   public:
     
     Dealer(Deck &cards, Player &player_1, Player &player_2, Player &player_3);
+    // void getNewCards(Deck &cards);
 
     void dealCards();
 

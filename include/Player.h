@@ -16,9 +16,8 @@ using namespace std;
 
 class Player : public pthreads_Class {
   public:
-    Player(Deck &cards);
 
-    Player(Deck &cards, string player_name);
+    Player(Deck &cards, int ID);
 
     void setHand(int card); 
 
@@ -39,9 +38,9 @@ class Player : public pthreads_Class {
     void run();
 
   private:
-    string name;
     int hand = -1;
     int newlyDrawnCard = -1;
+    int id; 
     bool started = false; 
     Deck &card_deck;
 };

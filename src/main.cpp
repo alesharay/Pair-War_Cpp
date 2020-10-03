@@ -14,7 +14,7 @@ struct hand{               // a hand container for each player
 
 hand hand1, hand2, hand3;  // hands for the players 
 Deck cards;
-Player player1( cards, "PLAYER 1" ), player2( cards, "PLAYER 2" ), player3( cards, "PLAYER 3" );
+Player player1( cards, 1 ), player2( cards, 2 ), player3( cards, 3 );
 Dealer dealer( cards, player1, player2, player3 );
 
 
@@ -45,26 +45,38 @@ int main(int argc, char *argv[]){
 
 // function declarations ======================================================
 void playRound(){ // launch dealer and player threads for the current round
+  pId = 0;
   cards.loadDeck();               // populate the card deck
+  // dealer.getNewCards(cards);
   resetHands();
+
+  ( roundNum == 1 ) ? turn = 1 : ( roundNum == 2 ) ? turn = 2 : turn = 3;
 
   printf("\n<<<<<<<<<<<< ROUND: %d >>>>>>>>>>>>\n", roundNum);
   fprintf(pFile, "\n<<<<<<<<<<<< ROUND: %d >>>>>>>>>>>>\n", roundNum);
 
-  // create dealer thread
-  pthread_create(&dealerThread, NULL, &dealer_thread, NULL);
+/*   // create dealer thread
+  pthread_create(&dealerThread, NULL, &dealer_thread, NULL); */
 
-  // create player threads
-  for( long i = 1; i <= NUM_THREADS; i++ ){
-    pthread_create(&playerThreads[i], NULL, &player_threads, (void *)i);
-  }
+  dealer.start_thread();
 
-  // join threads so that function waits until all threads complete
-  pthread_join(dealerThread, NULL); 
+  // // create player threads
+  // for( long i = 1; i <= NUM_THREADS; i++ ){
+  //   pthread_create(&playerThreads[i], NULL, &player_threads, (void *)i);
+  // }
+  player1.start_thread(); player2.start_thread(); player3.start_thread();
 
-  for( int j = 0; j < 3; ++j ){
+/*   // join threads so that function waits until all threads complete
+  pthread_join(dealerThread, NULL);  */
+  dealer.wait();
+
+/*   for( int j = 0; j < 3; ++j ){
     pthread_join(playerThreads[j], NULL); 
-  }
+  } */
+  player1.wait(); player2.wait(); player3.wait();
+
+
+
 } // end function
 
 void *dealer_thread(void *arg){ // this function is for the dealer thread
@@ -88,7 +100,10 @@ void *dealer_thread(void *arg){ // this function is for the dealer thread
 void *player_threads(void *playerId){ // this function is for player threads
 
   //  pId = (long)playerId;
-   long pId = (long)playerId;
+    // long pId = (long)playerId;
+    pId = (long)playerId;
+    printf("================ INSIDE PLAYER_THREADS METHOD ================\n");
+    printf("pid: %ld\n", pId);
    
    // assign hands to players based on which round is being played   
    hand thisHand;
@@ -107,6 +122,12 @@ void *player_threads(void *playerId){ // this function is for player threads
       else if( pId == 1 ) thisHand = hand1;
       else thisHand = hand2;
    }   
+
+
+  printf("hand1 card1: %d\n", hand1.card1);
+  printf("hand2 card1: %d\n", hand2.card1);
+  printf("hand3 card1: %d\n", hand3.card1);
+
    
    while( !win ){
       pthread_mutex_lock(&mutex_useDeck); // lock the deck ...............  
@@ -125,7 +146,7 @@ void *player_threads(void *playerId){ // this function is for player threads
    pthread_exit(NULL);   
 } // end function
 
-void useTheDeck(long pId, hand thisHand){
+void useTheDeck(long pid, hand thisHand){
    if( pId == 0 ){ // dealer uses the deck......................................   
       fprintf(pFile, "DEALER: shuffle\n"); dealer.shuffleCards(); // shuffle the deck
       cards.showDeck();
@@ -182,13 +203,20 @@ void useTheDeck(long pId, hand thisHand){
 } // end function
 
 void dealCards(){ // the dealer deals one card into each hand
+  printf("======== INSIDE DEAL CARDS METHOD ========\n");
   hand1.card1 = cards.pop();
+  printf("hand1 card1: %d\n", hand1.card1);
   hand2.card1 = cards.pop();      
+  printf("hand2 card1: %d\n", hand2.card1);
   hand3.card1 = cards.pop();      
+  printf("hand3 card1: %d\n", hand3.card1);
 } // end function
 
 void resetHands() {
-  hand1.card1 = 0; hand1.card2 = 0;
-  hand2.card1 = 0; hand2.card2 = 0;
-  hand3.card1 = 0; hand3.card2 = 0;
+  // hand1.card1 = 0; hand1.card2 = 0;
+  // hand2.card1 = 0; hand2.card2 = 0;
+  // hand3.card1 = 0; hand3.card2 = 0;
+  player1.resetHand();
+  player2.resetHand();
+  player3.resetHand();
 }
