@@ -52,7 +52,7 @@ $(APP): $(APPOBJS) $(LIB)
 
 # User targets to follow -------------------------------------------------
 clean:
-	$(RM) $(LIB) $(LIBOBJS) $(APP) $(APPOBJS)
+	$(RM) $(LIB) $(LIBOBJS) $(APP) $(APPOBJS) log.txt
 #$(TST) $(TSTOBJS)
 
 app: all

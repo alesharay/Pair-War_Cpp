@@ -7,7 +7,7 @@ Player::Player(Deck &cards, int ID) : card_deck(cards), id(ID) { }
 void Player::setHand(int card) {
   hand = card;
   printf("----PLAYER %d:\nHAND %d\n", id, hand);
-  fprintf(pFile, "PLAYER %ld: hand %d\n", pId, hand);
+  fprintf(pFile, "PLAYER %d: hand %d\n", id, hand);
 
 }
 
@@ -77,7 +77,7 @@ void Player::run() {
          }
          if( win == 0 ){   
            if(turn == id ) {
-             id = id;
+             pId = id;
              accessDeck();
            }
          } 

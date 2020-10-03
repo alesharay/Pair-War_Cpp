@@ -75,7 +75,7 @@ void Deck::showDeck() {
 
   bool emptySlotFound = false; 
   for( int i = 0, deck_size = size(); i < deck_size; ++i) {
-    if( tableCards[i] == -1 ) {
+    if( tableCards[i] == -1 || i == deck_size) {
       emptySlotFound = true;
       printf("\n");
       fprintf(pFile, "\n");
