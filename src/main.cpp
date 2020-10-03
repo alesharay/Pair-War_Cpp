@@ -1,5 +1,5 @@
 // library links ===============================================================
-// #include "Player.h"
+// #include "Player.h"  
 #include "Dealer.h"
 
 #include <pthread.h>
@@ -14,65 +14,55 @@ struct hand{               // a hand container for each player
 
 hand hand1, hand2, hand3;  // hands for the players 
 Deck cards;
-Player player1( "PLAYER 1" ), player2( "PLAYER 2" ), player3( "PLAYER 3" );
-Dealer dealer(cards, player1, player2, player3);
+Player player1( cards, "PLAYER 1" ), player2( cards, "PLAYER 2" ), player3( cards, "PLAYER 3" );
+Dealer dealer( cards, player1, player2, player3 );
 
 
 // function prototypes =========================================================
 void *dealer_thread(void *arg);
 void *player_threads(void *playerId);
 void useTheDeck(long, hand);
-void randSeed();
 void dealCards(); //-------------------dealCards()
 void playRound();
-void parseArgs(char *[]);
+void resetHands();
 
 // main ========================================================================
 int main(int argc, char *argv[]){
 
-   pFile = fopen("log.txt", "a"); // open the log file 
-   parseArgs(argv);               // parse args from console   
-   randSeed();                    // seed rand() with arg from command line
+  pFile = fopen("log.txt", "a"); // open the log file 
+  seed = atoi( argv[1] );
+  srand(seed);
 
    while( roundNum <= numberOfRounds ){
+      win = false;                // reset the win flag 
       playRound();                // launch a round
       roundNum++;                 // inc the round counter to next round
-      win = false;                // reset the win flag 
    }
    
    fclose(pFile);                 // close the log file
    exit(EXIT_SUCCESS);
 } // end main
 
-
 // function declarations ======================================================
-void parseArgs(char *argv[]){ // set seed to val from the command line
-   seed = atoi( argv[1] );
-} // end function
-
-void randSeed(){ // seed rand() using arg x from the command line    
-   srand(seed);
-} // end function
-
 void playRound(){ // launch dealer and player threads for the current round
   cards.loadDeck();               // populate the card deck
+  resetHands();
 
   printf("\n<<<<<<<<<<<< ROUND: %d >>>>>>>>>>>>\n", roundNum);
   fprintf(pFile, "\n<<<<<<<<<<<< ROUND: %d >>>>>>>>>>>>\n", roundNum);
 
   // create dealer thread
-  int retD = pthread_create(&dealerThread, NULL, &dealer_thread, NULL);
+  pthread_create(&dealerThread, NULL, &dealer_thread, NULL);
 
   // create player threads
-  int retP;
   for( long i = 1; i <= NUM_THREADS; i++ ){
-    retP = pthread_create(&playerThreads[i], NULL, &player_threads, (void *)i);
+    pthread_create(&playerThreads[i], NULL, &player_threads, (void *)i);
   }
 
   // join threads so that function waits until all threads complete
   pthread_join(dealerThread, NULL); 
 
-  for( int j = 0; j < 3; j++ ){
+  for( int j = 0; j < 3; ++j ){
     pthread_join(playerThreads[j], NULL); 
   }
 } // end function
@@ -80,12 +70,10 @@ void playRound(){ // launch dealer and player threads for the current round
 void *dealer_thread(void *arg){ // this function is for the dealer thread
 
    pId = 0;       // identify the dealer as player 0
-  //  long pId = 0;       // identify the dealer as player 0
    turn = 0;           // set/reset turn val to indicate it's the dealer's turn 
    hand dealerHand;    // dealer gets a NULL hand
    useTheDeck(pId, dealerHand); // let the dealer use the deck
    
-
    // leave the dealer thread
    pthread_mutex_lock(&mutex_dealerExit);  // lock the exit ............
       while( !win ){
@@ -111,7 +99,7 @@ void *player_threads(void *playerId){ // this function is for player threads
    } 
    else if( roundNum == 2 ){
       if( pId == 2 ) thisHand = hand2; 
-      else if( pId == 2 ) thisHand = hand3;
+      else if( pId == 3 ) thisHand = hand3;
       else thisHand = hand1;
    }    
    else if( roundNum == 3 ){
@@ -139,7 +127,7 @@ void *player_threads(void *playerId){ // this function is for player threads
 
 void useTheDeck(long pId, hand thisHand){
    if( pId == 0 ){ // dealer uses the deck......................................   
-      fprintf(pFile, "DEALER: shuffle\n"); dealer.shuffleCards(cards); // shuffle the deck
+      fprintf(pFile, "DEALER: shuffle\n"); dealer.shuffleCards(); // shuffle the deck
       cards.showDeck();
 
       fprintf(pFile, "DEALER: deal\n"); dealCards();      // deal the cards
@@ -184,7 +172,7 @@ void useTheDeck(long pId, hand thisHand){
          }   
       }      
    }  
-   turn ++; // inc turn so next player may use the deck
+   turn++; // inc turn so next player may use the deck
    if( turn > NUM_THREADS ) {
      turn = 1;      // if player3 went, move to player1
      cards.showDeck();
@@ -194,7 +182,13 @@ void useTheDeck(long pId, hand thisHand){
 } // end function
 
 void dealCards(){ // the dealer deals one card into each hand
-  hand1.card1 = cards.pop();      
+  hand1.card1 = cards.pop();
   hand2.card1 = cards.pop();      
   hand3.card1 = cards.pop();      
 } // end function
+
+void resetHands() {
+  hand1.card1 = 0; hand1.card2 = 0;
+  hand2.card1 = 0; hand2.card2 = 0;
+  hand3.card1 = 0; hand3.card2 = 0;
+}

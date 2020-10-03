@@ -2,11 +2,10 @@
 
 using namespace std;
 
-Player::Player() { }
+Player::Player(Deck &cards) : card_deck(cards) {}
 
-Player::Player(string name) {
-  this->name = name;
-}
+Player::Player(Deck &cards, string player_name) : 
+  card_deck(cards), name(player_name) { }
 
 void Player::setHand(int card) {
   hand = card;
@@ -14,11 +13,11 @@ void Player::setHand(int card) {
   fprintf(pFile, "PLAYER %ld: hand %d\n", pId, hand);
 }
 
-void Player::accessDeck(Deck &cards) {
-  drawCard(cards);
+void Player::accessDeck() {
+  drawCard();
   displayHand();
   printHandToFile();
-  compareCards(cards);
+  compareCards();
 }
 
 void Player::displayHand() {
@@ -29,17 +28,17 @@ void Player::printHandToFile() {
   fprintf(pFile, "PLAYER %ld: hand %d %d\n", pId, hand, newlyDrawnCard);
 }
 
-void Player::drawCard(Deck &cards) {
-  newlyDrawnCard = cards.pop();
+void Player::drawCard() {
+  newlyDrawnCard = card_deck.pop();
   fprintf(pFile, "PLAYER %ld: draws %d \n", pId, newlyDrawnCard); 
 }
 
-void Player::discard(Deck &cards, int card) {
-  cards.push(card);
+void Player::discard( int card ) {
+  card_deck.push(card);
   fprintf(pFile, "PLAYER %ld: discards %d \n", pId, card);   
 }
 
-void Player::compareCards(Deck &cards) {
+void Player::compareCards( ) {
   if( hand == newlyDrawnCard ) {
     printf("WIN yes\n");      
     fprintf(pFile, "PLAYER %ld: wins\n", pId);
@@ -48,14 +47,18 @@ void Player::compareCards(Deck &cards) {
   } else {
     printf("Win no\n");
     if( rand() % 2 ) {
-      discard( cards, newlyDrawnCard );  
+      discard( newlyDrawnCard );  
     } else {
       int temp = hand;
       hand = newlyDrawnCard;
-      discard( cards, temp ); 
+      discard( temp ); 
     }
-    cards.showDeck();
+    card_deck.showDeck();
   }
+}
+
+void Player::resetHand() {
+  hand = -1;
 }
 
 void Player::run() {
@@ -75,7 +78,7 @@ void Player::run() {
          }
          if( win == 0 ){   
             // useTheDeck(pId, thisHand); // let players use the deck
-            // accessDeck(cards);
+            accessDeck();
          }         
       pthread_mutex_unlock(&mutex_useDeck); // unlock the deck ...........
    }

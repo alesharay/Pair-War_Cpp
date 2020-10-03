@@ -20,10 +20,10 @@ class pthreads_Class {
     void wait();
 
   protected:
-    virtual void run() = 0; 
+    virtual void run() = 0;
 
   private:
     static void * run_helper(void * This);
 
-    pthread_t _thread;
+    pthread_t thread;
 };
