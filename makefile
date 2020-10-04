@@ -45,7 +45,7 @@ $(APP): $(APPOBJS) $(LIB)
 
 # User targets to follow -------------------------------------------------
 clean:
-	$(RM) $(LIB) $(LIBOBJS) $(APP) $(APPOBJS) log.txt -r bin/
+	$(RM) $(LIB) $(LIBOBJS) $(APP) $(APPOBJS) Log_File.txt -r bin/
 
 run: all
 	./$(APP) $(seed)

@@ -1,12 +1,10 @@
-// #include "Player.h"  
 #include "Dealer.h"
 
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fstream>         // for writing to the log 
+#include <fstream>
 #include <iostream>
-
 
 Deck cards;
 Player player1( cards, 1 ), player2( cards, 2 ), player3( cards, 3 );
@@ -15,23 +13,32 @@ Dealer dealer( cards, player1, player2, player3 );
 // <<<<<<<< function prototypes >>>>>>>>
 void play_round();
 void reset_hands();
+void set_seed( char *argv[] );
 
 // <<<<<<<< main >>>>>>>> 
-int main(int argc, char *argv[]){
+int main( int argc, char *argv[] ){
 
-  log_file = fopen("log.txt", "a"); // open the log file 
-  seed = atoi( argv[1] );
-  srand(seed);
+  log_file = fopen( "Log_File.txt", "a" );
+  set_seed(argv);
 
-   while( current_round <= NUMBER_OF_ROUNDS ) {
-      winner_found = false;                // reset the win flag 
-      play_round();                // launch a round
-      current_round++;                 // inc the round counter to next round
-   }
-   
-   fclose(log_file);                 // close the log file
+  for( current_round; current_round <= NUMBER_OF_ROUNDS; current_round++ ) {
+    winner_found = false;
+    play_round();
+  }
+
+   fclose(log_file);
    exit(EXIT_SUCCESS);
 } // end main
+
+void set_seed( char *argv[] ) {
+  try { 
+    seed = atoi( argv[1] );
+    if( seed < 1000000 ) seed += 1000000;
+    srand(seed);
+  } catch( const exception& e) {
+    printf( "Invalid seed entered... Please try again" );
+  }
+}
 
 // <<<<<<<< play_round >>>>>>>>
 void play_round(){ // launch dealer and player threads for the current round
