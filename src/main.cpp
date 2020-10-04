@@ -8,11 +8,7 @@
 #include <fstream>         // for writing to the log 
 #include <iostream>
 
-struct hand{               // a hand container for each player 
-   int card1, card2;
-};
 
-hand hand1, hand2, hand3;  // hands for the players 
 Deck cards;
 Player player1( cards, 1 ), player2( cards, 2 ), player3( cards, 3 );
 Dealer dealer( cards, player1, player2, player3 );
@@ -42,7 +38,7 @@ int main(int argc, char *argv[]){
 void playRound(){ // launch dealer and player threads for the current round
   pId = 0;
   cards.loadDeck();               // populate the card deck
-  resetHands();
+  // resetHands();
 
   ( roundNum == 1 ) ? turn = 1 : ( roundNum == 2 ) ? turn = 2 : turn = 3;
 
@@ -60,7 +56,6 @@ void playRound(){ // launch dealer and player threads for the current round
   player1.wait(); player2.wait(); player3.wait();
 
 } // end playRound
-
 
 // <<<<<<<< resetHands >>>>>>>>
 void resetHands() {

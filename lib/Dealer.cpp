@@ -44,8 +44,55 @@ void Dealer::shuffleCards() {
 
 void Dealer::dealCards() {
   fprintf(pFile, "DEALER: deal\n");      // deal the cards
+  printf("DEALER: deal\n");      // deal the cards
 
-  player1.setHand( card_deck.pop() );
-  player2.setHand( card_deck.pop() );
-  player3.setHand( card_deck.pop() ); 
+  if( turn == 1) { 
+    player1.setHand( card_deck.pop() );
+    printf("\n\n\n");
+    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player1.getID(), player1.getHand());
+    printf("\n\n\n");
+
+    player2.setHand( card_deck.pop() );
+     printf("\n\n\n");
+    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player2.getID(), player2.getHand());
+    printf("\n\n\n");
+
+    player3.setHand( card_deck.pop() ); 
+    printf("\n\n\n");
+    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player3.getID(), player3.getHand());
+    printf("\n\n\n");
+
+  } else if( turn == 2 ) {
+    player2.setHand( card_deck.pop() );
+    printf("\n\n\n");
+    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player2.getID(), player2.getHand());
+    printf("\n\n\n");
+
+    player3.setHand( card_deck.pop() ); 
+    printf("\n\n\n");
+    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player3.getID(), player3.getHand());
+    printf("\n\n\n");
+
+    player1.setHand( card_deck.pop() );
+    printf("\n\n\n");
+    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player1.getID(), player1.getHand());
+    printf("\n\n\n");
+
+  } else {
+    player3.setHand( card_deck.pop() ); 
+    printf("\n\n\n");
+    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player3.getID(), player3.getHand());
+    printf("\n\n\n"); 
+
+    player1.setHand( card_deck.pop() );
+    printf("\n\n\n");
+    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player1.getID(), player1.getHand());
+    printf("\n\n\n");
+    
+    player2.setHand( card_deck.pop() );
+    printf("\n\n\n");
+    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player2.getID(), player2.getHand());
+    printf("\n\n\n");
+  }
+
 }

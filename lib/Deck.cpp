@@ -82,4 +82,5 @@ void Deck::showDeck() {
   if( !emptySlotFound ) { 
     printf("\n");
     fprintf(pFile, "\n");
-} // end showDeck
+  } // end showDeck
+}
