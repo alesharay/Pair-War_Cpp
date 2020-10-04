@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class Dealer : public pthreads_Class {
+class Dealer : public pthreads_class {
   public:
     
     Dealer(Deck &cards, Player &player_1, Player &player_2, Player &player_3);

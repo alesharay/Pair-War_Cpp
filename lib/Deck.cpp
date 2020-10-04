@@ -19,18 +19,8 @@ int Deck::size() {
   return sizeof(tableCards)/sizeof(tableCards[0]);
 } // end size
 
-// <<<<<<<< SHUFFLECARDS >>>>>>>>
-void Deck::shuffleCards() {
-  for( int i = 0; i < size()-1; ++i ) {
-    int randomIndex = rand() % size();
-    int temp = tableCards[i];
-    tableCards[i] = tableCards[randomIndex];
-    tableCards[randomIndex] = temp;
-  }
-} // end shuffleCards
-
 // <<<<<<<< PUSH >>>>>>>>
-void Deck::push(int card) {
+void Deck::push( int card ) {
   for( int i = 0, deck_size; size(); ++i ) {
     if( tableCards[i] == -1 ) { 
       tableCards[i] = card;
@@ -52,12 +42,12 @@ int Deck::pop() {
 } // end pop
 
 // <<<<<<<< GET >>>>>>>>
-int Deck::get(int index) {
+int Deck::get( int index ) {
   return tableCards[index];
 } // end get
 
 // <<<<<<<< SET >>>>>>>>
-void Deck::set(int index, int card) {
+void Deck::set( int index, int card ) {
   tableCards[index] = card;
 } // end set
 

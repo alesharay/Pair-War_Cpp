@@ -9,6 +9,7 @@ TST		  = $(BINDIR)test
 CPP		  = g++
 AR		  = ar
 RM		  = rm -f
+MD 			= mkdir bin &&
 
 # Directories ------------------------------------------------------------
 APPDIR	= src/
@@ -38,7 +39,7 @@ all: $(APP) $(LIB)
 #$(TST)
 
 $(LIB): $(LIBOBJS)
-	$(AR) rvs $(LIB) $(LIBOBJS)
+	$(MD)	$(AR) rvs $(LIB) $(LIBOBJS)
 
 $(APP): $(APPOBJS) $(LIB)
 	$(CPP) -o $(APP) $(APPOBJS) -pthread $(LFLAGS)
@@ -52,7 +53,7 @@ $(APP): $(APPOBJS) $(LIB)
 
 # User targets to follow -------------------------------------------------
 clean:
-	$(RM) $(LIB) $(LIBOBJS) $(APP) $(APPOBJS) log.txt
+	$(RM) $(LIB) $(LIBOBJS) $(APP) $(APPOBJS) log.txt -r bin/
 #$(TST) $(TSTOBJS)
 
 app: all

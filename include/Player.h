@@ -2,7 +2,7 @@
 
 #include "globals.h"
 #include "Deck.h"
-#include "pthreads_Class.h"
+#include "pthreads_class.h"
 
 #include <pthread.h>
 #include <stdio.h>
@@ -14,7 +14,7 @@
 
 using namespace std;
 
-class Player : public pthreads_Class {
+class Player : public pthreads_class {
   public:
 
     Player(Deck &cards, int ID);
