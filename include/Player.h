@@ -15,33 +15,19 @@
 using namespace std;
 
 class Player : public pthreads_class {
+  
   public:
-
     Player(Deck &cards, int ID);
-
-    void setHand(int card); 
-
-    int getHand();
-
-    void setID(int ID);
-
-    int getID();
-
-    void accessDeck();
-
-    void displayHand();
-
-    void printHandToFile();
-
-    void drawCard();
-
-    void discard( int card );
-
-    void compareCards();
-
-    void resetHand();
-
     void run();
+    void access_deck();
+    void draw_card();
+    void discard_card( int card );
+    void compare_cards();
+    void set_hand(int card); 
+    int get_hand();
+    void set_ID(int ID);
+    int get_ID();
+    void reset_hand();
 
   private:
     int hand = -1;
@@ -49,4 +35,5 @@ class Player : public pthreads_class {
     int id; 
     bool started = false; 
     Deck &card_deck;
+
 };

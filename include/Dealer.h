@@ -12,20 +12,16 @@
 using namespace std;
 
 class Dealer : public pthreads_class {
-  public:
-    
+  
+  public:    
     Dealer(Deck &cards, Player &player_1, Player &player_2, Player &player_3);
-    // void getNewCards(Deck &cards);
-
-    void dealCards();
-
-    void shuffleCards();
-
-    void accessDeck();
-
     void run();
+    void deal_cards();
+    void shuffle_deck();
+    void access_deck();
 
   private:
     Deck &card_deck;
-    Player &player1, player2, player3;
+    Player &player1, &player2, &player3;
+
 };
