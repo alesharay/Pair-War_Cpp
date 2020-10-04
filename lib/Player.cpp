@@ -4,17 +4,18 @@ using namespace std;
 
 Player::Player(Deck &cards, int ID) : card_deck(cards), id(ID) { }
 
-void Player::setHand(int card) {
-  hand = card;
-  printf("----PLAYER %d:\nHAND %d\n", id, hand);
-  fprintf(pFile, "PLAYER %d: hand %d\n", id, hand);
+void Player::setHand(int card) { hand = card; }
 
-}
+int Player::getHand() { return hand; }
+
+void Player::setID(int ID) { id = ID; }
+
+int Player::getID() { return id; }
 
 void Player::accessDeck() {
   drawCard();
-  displayHand();
-  printHandToFile();
+  printf("----PLAYER %d:\nHAND %d %d\n", id, hand, newlyDrawnCard);
+  // printHandToFile();
   compareCards();
 
   turn++; // inc turn so next player may use the deck
@@ -25,15 +26,12 @@ void Player::accessDeck() {
   pthread_cond_broadcast(&condition_var); // broadcast that deck is available
 }
 
-void Player::displayHand() {
-  printf("----PLAYER %d:\nHAND %d %d\n", id, hand, newlyDrawnCard);
-}
-
 void Player::printHandToFile() {
   fprintf(pFile, "PLAYER %d: hand %d %d\n", id, hand, newlyDrawnCard);
 }
 
 void Player::drawCard() {
+  fprintf(pFile, "PLAYER %d: hand %d \n", id, hand); 
   newlyDrawnCard = card_deck.pop();
   fprintf(pFile, "PLAYER %d: draws %d \n", id, newlyDrawnCard); 
 }
@@ -67,6 +65,11 @@ void Player::resetHand() {
 }
 
 void Player::run() {
+
+  printf("\n\n\n");
+  printf("PLAYER %d: hand %d\n", id, hand);
+  printf("\n\n\n");
+
 
      while( win == 0 ){
       int locked = pthread_mutex_lock(&mutex_useDeck); // lock the deck ...............  

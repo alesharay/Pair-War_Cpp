@@ -1,10 +1,3 @@
-#include <iostream>
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
-#include <fstream>
-
 #include "Deck.h"
 
 using namespace std;
@@ -75,7 +68,7 @@ void Deck::showDeck() {
 
   bool emptySlotFound = false; 
   for( int i = 0, deck_size = size(); i < deck_size; ++i) {
-    if( tableCards[i] == -1 || i == deck_size) {
+    if( tableCards[i] == -1 || i >= deck_size) {
       emptySlotFound = true;
       printf("\n");
       fprintf(pFile, "\n");
@@ -86,5 +79,8 @@ void Deck::showDeck() {
     }
   }
 
-  if( !emptySlotFound ) printf("\n");
-} // end showDeck
+  if( !emptySlotFound ) { 
+    printf("\n");
+    fprintf(pFile, "\n");
+  } // end showDeck
+}

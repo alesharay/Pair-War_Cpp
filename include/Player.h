@@ -21,6 +21,12 @@ class Player : public pthreads_Class {
 
     void setHand(int card); 
 
+    int getHand();
+
+    void setID(int ID);
+
+    int getID();
+
     void accessDeck();
 
     void displayHand();
