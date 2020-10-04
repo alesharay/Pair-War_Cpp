@@ -2,24 +2,24 @@
 
 using namespace std;
 Deck::Deck() {
-  loadDeck();
+  load_deck();
 }
 
-// <<<<<<<< LOADDECK >>>>>>>>
-void Deck::loadDeck() {
+// <<<<<<<< load_deck >>>>>>>>
+void Deck::load_deck() {
   for(int i = 0; i < 4; ++i) {
     for (int j = 0; j < 13; ++j) {
       tableCards[(i*13)+j] = j+1;
     }
   }
-} // loadDeck
+} // load_deck
 
-// <<<<<<<< SIZE >>>>>>>>
+// <<<<<<<< size >>>>>>>>
 int Deck::size() {
   return sizeof(tableCards)/sizeof(tableCards[0]);
 } // end size
 
-// <<<<<<<< PUSH >>>>>>>>
+// <<<<<<<< push >>>>>>>>
 void Deck::push( int card ) {
   for( int i = 0, deck_size; size(); ++i ) {
     if( tableCards[i] == -1 ) { 
@@ -29,7 +29,7 @@ void Deck::push( int card ) {
   }
 } // end push
 
-// <<<<<<<< POP >>>>>>>>
+// <<<<<<<< pop >>>>>>>>
 int Deck::pop() {
   int card = tableCards[0];
 
@@ -41,36 +41,36 @@ int Deck::pop() {
   return card;
 } // end pop
 
-// <<<<<<<< GET >>>>>>>>
+// <<<<<<<< get >>>>>>>>
 int Deck::get( int index ) {
   return tableCards[index];
 } // end get
 
-// <<<<<<<< SET >>>>>>>>
+// <<<<<<<< set >>>>>>>>
 void Deck::set( int index, int card ) {
   tableCards[index] = card;
 } // end set
 
-// <<<<<<<< SHOWDECK >>>>>>>>
-void Deck::showDeck() {
+// <<<<<<<< show_deck >>>>>>>>
+void Deck::show_deck() {
   printf("DECK: ");
-  fprintf(pFile, "DECK: ");   
+  fprintf(log_file, "DECK: ");   
 
   bool emptySlotFound = false; 
   for( int i = 0, deck_size = size(); i < deck_size; ++i) {
     if( tableCards[i] == -1 || i >= deck_size) {
       emptySlotFound = true;
       printf("\n");
-      fprintf(pFile, "\n");
+      fprintf(log_file, "\n");
       break;
     } else {
       printf( "%d ", tableCards[i] );
-      fprintf( pFile, "%d ", tableCards[i] );
+      fprintf( log_file, "%d ", tableCards[i] );
     }
   }
 
   if( !emptySlotFound ) { 
     printf("\n");
-    fprintf(pFile, "\n");
-  } // end showDeck
+    fprintf(log_file, "\n");
+  } // end show_deck
 }

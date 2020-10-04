@@ -12,11 +12,8 @@ class pthreads_class {
   
   public:
     pthreads_class();
-
     virtual ~pthreads_class();
-
     bool start_thread();
-
     void wait();
 
   protected:
@@ -24,6 +21,6 @@ class pthreads_class {
 
   private:
     static void * run_helper(void * This);
-
     pthread_t thread;
+    
 };

@@ -12,14 +12,14 @@ void Player::run() {
   printf("PLAYER %d: hand %d\n", id, hand);
   printf("\n\n\n"); */
 
-     while( !win ){
+     while( !winner_found ){
       int locked = pthread_mutex_lock(&mutex_deck_availability_to_player); // lock the deck
 
-         while( id != turn && win == 0 ){ // make players wait for their turn
+         while( id != which_player && winner_found == 0 ){ // make players wait for their turn
             pthread_cond_wait(&cond_deck_availability, &mutex_deck_availability_to_player); 
          }
-         if( !win ){   
-           if( turn == id ) {
+         if( !winner_found ){   
+           if( which_player == id ) {
              access_deck();
            }
          } 
@@ -27,44 +27,44 @@ void Player::run() {
       // if( id > 3 ) id = 0; ++;        
    }
    // leave the player thread
-   fprintf(pFile, "PLAYER %d: exits round\n", id); 
+   fprintf(log_file, "PLAYER %d: exits round\n", id); 
    
    pthread_exit(NULL);  
 } // end run
 
-// <<<<<<<< accessDeck >>>>>>>>
+// <<<<<<<< access_deck >>>>>>>>
 void Player::access_deck() {
   draw_card();
   printf("----PLAYER %d:\nHAND %d %d\n", id, hand, newlyDrawnCard);
   compare_cards();
 
-  turn++; // inc turn so next player may use the deck
-  if( turn > NUM_THREADS ) {
-    turn = 1;      // if player3 went, move to player1
+  which_player++; // inc turn so next player may use the deck
+  if( which_player > NUMBER_OF_THREADS ) {
+    which_player = 1;      // if player3 went, move to player1
   }
    
   pthread_cond_broadcast(&cond_deck_availability); // broadcast that deck is available
-} // accessDeck
+} // access_deck
 
-// <<<<<<<< drawCard >>>>>>>>
+// <<<<<<<< draw_card >>>>>>>>
 void Player::draw_card() {
-  fprintf(pFile, "PLAYER %d: hand %d \n", id, hand); 
+  fprintf(log_file, "PLAYER %d: hand %d \n", id, hand); 
   newlyDrawnCard = card_deck.pop();
-  fprintf(pFile, "PLAYER %d: draws %d \n", id, newlyDrawnCard); 
-} // end drawCard
+  fprintf(log_file, "PLAYER %d: draws %d \n", id, newlyDrawnCard); 
+} // end draw_card
 
-// <<<<<<<< discardCard >>>>>>>>
+// <<<<<<<< discard_card >>>>>>>>
 void Player::discard_card( int card ) {
   card_deck.push(card);
-  fprintf(pFile, "PLAYER %d: discards %d \n", id, card);   
-} // end discardCard
+  fprintf(log_file, "PLAYER %d: discards %d \n", id, card);   
+} // end discard_card
 
-// <<<<<<<< compareCards >>>>>>>>
+// <<<<<<<< compare_cards >>>>>>>>
 void Player::compare_cards( ) {
   if( hand == newlyDrawnCard ) {
     printf("WIN yes\n");      
-    fprintf(pFile, "PLAYER %d: wins\n", id);
-    win = true;
+    fprintf(log_file, "PLAYER %d: wins\n", id);
+    winner_found = true;
     pthread_cond_signal(&cond_winner_found); // signal dealer to exit           
   } else {
     printf("Win no\n");
@@ -75,23 +75,23 @@ void Player::compare_cards( ) {
       hand = newlyDrawnCard;
       discard_card( temp ); 
     }
-    card_deck.showDeck();
+    card_deck.show_deck();
   }
-} // end compareCards
+} // end compare_cards
 
-// <<<<<<<< setHand >>>>>>>>
-void Player::set_hand(int card) { hand = card; } // end setHand
+// <<<<<<<< set_hand >>>>>>>>
+void Player::set_hand(int card) { hand = card; } // end set_hand
 
-// <<<<<<<< resetHand >>>>>>>>
-int Player::get_hand() { return hand; } // end getHand
+// <<<<<<<< get_hand >>>>>>>>
+int Player::get_hand() { return hand; } // end get_hand
 
-// <<<<<<<< resetHand >>>>>>>>
-void Player::set_ID(int ID) { id = ID; } // end setID
+// <<<<<<<< set_ID >>>>>>>>
+void Player::set_ID(int ID) { id = ID; } // end set_ID
 
-// <<<<<<<< resetHand >>>>>>>>
-int Player::get_ID() { return id; } // end getID
+// <<<<<<<< get_ID >>>>>>>>
+int Player::get_ID() { return id; } // end get_ID
 
-// <<<<<<<< resetHand >>>>>>>>
+// <<<<<<<< reset_hand >>>>>>>>
 void Player::reset_hand() {
   hand = -1;
-} // end resetHand
+} // end reset_hand

@@ -2,6 +2,7 @@
   "files.associations": {
     "*.tcc": "cpp",
     "random": "cpp",
-    "istream": "cpp"
+    "istream": "cpp",
+    "functional": "cpp"
   }
 }

@@ -10,8 +10,6 @@
 #include <fstream>         // for writing to the log 
 #include <iostream>
 
-
-
 using namespace std;
 
 class Player : public pthreads_class {
