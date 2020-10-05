@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fstream>         // for writing to the log 
+#include <fstream>
 #include <iostream>
 
 using namespace std;

@@ -23,15 +23,18 @@ class Player : public pthreads_class {
     void compare_cards();
     void set_hand(int card); 
     int get_hand();
+    int get_newlyDrawnCard();
     void set_ID(int ID);
     int get_ID();
+    bool won_game();
     void reset_hand();
 
   private:
     int hand = -1;
-    int newlyDrawnCard = -1;
+    int newly_drawn_card = -1;
     int id; 
     bool started = false; 
+    bool won = false;
     Deck &card_deck;
 
 };

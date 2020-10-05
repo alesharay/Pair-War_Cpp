@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fstream>         
+#include <fstream>
 #include <iostream>
 
 #define NUMBER_OF_CARDS 52

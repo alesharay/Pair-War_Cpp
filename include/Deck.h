@@ -18,7 +18,8 @@ class Deck {
     int pop();
     int get( int i );
     void set( int i, int card );
-    void show_deck();
+    void display_deck();
+    void print_deck();
 
   private:
     int tableCards[ NUMBER_OF_CARDS ];
