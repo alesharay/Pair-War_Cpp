@@ -1,36 +1,24 @@
 #include "Deck.h"
 
 using namespace std;
-Deck::Deck() {
-  loadDeck();
-}
 
-// <<<<<<<< LOADDECK >>>>>>>>
-void Deck::loadDeck() {
-  for(int i = 0; i < 4; ++i) {
-    for (int j = 0; j < 13; ++j) {
-      tableCards[(i*13)+j] = j+1;
+// <<<<<<<< constrcutor >>>>>>>>
+Deck::Deck() { load_deck(); } // end constructor
+
+// <<<<<<<< load_deck >>>>>>>>
+void Deck::load_deck() {
+  for( int i = 0; i < 4; ++i ) {
+    for ( int j = 0; j < 13; ++j ) {
+      tableCards[ (i*13)+j ] = j+1;
     }
   }
-} // loadDeck
+} // load_deck
 
-// <<<<<<<< SIZE >>>>>>>>
-int Deck::size() {
-  return sizeof(tableCards)/sizeof(tableCards[0]);
-} // end size
+// <<<<<<<< size >>>>>>>>
+int Deck::size() { return NUMBER_OF_CARDS; } // end size
 
-// <<<<<<<< SHUFFLECARDS >>>>>>>>
-void Deck::shuffleCards() {
-  for( int i = 0; i < size()-1; ++i ) {
-    int randomIndex = rand() % size();
-    int temp = tableCards[i];
-    tableCards[i] = tableCards[randomIndex];
-    tableCards[randomIndex] = temp;
-  }
-} // end shuffleCards
-
-// <<<<<<<< PUSH >>>>>>>>
-void Deck::push(int card) {
+// <<<<<<<< push >>>>>>>>
+void Deck::push( int card ) {
   for( int i = 0, deck_size; size(); ++i ) {
     if( tableCards[i] == -1 ) { 
       tableCards[i] = card;
@@ -39,48 +27,48 @@ void Deck::push(int card) {
   }
 } // end push
 
-// <<<<<<<< POP >>>>>>>>
+// <<<<<<<< pop >>>>>>>>
 int Deck::pop() {
   int card = tableCards[0];
 
-  for( int i = 0; i < size()-1; ++i ) {
-    tableCards[i] = tableCards[i+1];
-  }
-  tableCards[size()-1] = -1;
-
+  for( int i = 0; i < (NUMBER_OF_CARDS-1); ++i ) { tableCards[i] = tableCards[i+1]; }
+  tableCards[ (NUMBER_OF_CARDS-1) ] = -1;
   return card;
 } // end pop
 
-// <<<<<<<< GET >>>>>>>>
-int Deck::get(int index) {
-  return tableCards[index];
-} // end get
+// <<<<<<<< get >>>>>>>>
+int Deck::get( int index ) { return tableCards[index]; } // end get
 
-// <<<<<<<< SET >>>>>>>>
-void Deck::set(int index, int card) {
-  tableCards[index] = card;
-} // end set
+// <<<<<<<< set >>>>>>>>
+void Deck::set( int index, int card ) { tableCards[index] = card; } // end set
 
-// <<<<<<<< SHOWDECK >>>>>>>>
-void Deck::showDeck() {
-  printf("DECK: ");
-  fprintf(pFile, "DECK: ");   
-
+// <<<<<<<< display_deck >>>>>>>>
+void Deck::display_deck() {
+  printf( "DECK: " );
   bool emptySlotFound = false; 
-  for( int i = 0, deck_size = size(); i < deck_size; ++i) {
-    if( tableCards[i] == -1 || i >= deck_size) {
+  for( int i = 0; i < NUMBER_OF_CARDS; i++ ) {
+    if( tableCards[i] == -1 || i >= NUMBER_OF_CARDS ) {
       emptySlotFound = true;
-      printf("\n");
-      fprintf(pFile, "\n");
+      printf( "\n" );
       break;
-    } else {
-      printf( "%d ", tableCards[i] );
-      fprintf( pFile, "%d ", tableCards[i] );
-    }
+    } else { printf( "%d ", tableCards[i] ); }
   }
 
-  if( !emptySlotFound ) { 
-    printf("\n");
-    fprintf(pFile, "\n");
-  } // end showDeck
-}
+  if( !emptySlotFound ) { printf( "\n" ); }
+} // end display_deck
+
+// <<<<<<<< print_deck >>>>>>>>
+void Deck::print_deck() {
+  fprintf( log_file, "DECK: " );
+
+  bool emptySlotFound = false;
+  for( int i = 0; i < NUMBER_OF_CARDS; i++ ) {
+    if( tableCards[i] == -1 || i >= NUMBER_OF_CARDS ) {
+      emptySlotFound = true;
+      fprintf( log_file, "\n" );
+      break;
+    } else { fprintf( log_file, "%d ", tableCards[i] ); }
+  }
+
+  if( !emptySlotFound ) { fprintf(log_file, "\n"); } 
+}// end print_deck

@@ -11,27 +11,17 @@ using namespace std;
 class Deck {
 
   public:
-
     Deck();
-
-    void loadDeck();
-
-    void shuffleCards();
-
+    void load_deck();
     int size();
-
-    void push(int card);
-
+    void push( int card );
     int pop();
-
-    int get(int i);
-
-    void set(int i, int card);
-
-    void showDeck();
+    int get( int i );
+    void set( int i, int card );
+    void display_deck();
+    void print_deck();
 
   private:
-
-    int tableCards[NUM_CARDS];
-
+    int tableCards[ NUMBER_OF_CARDS ];
+    
 };

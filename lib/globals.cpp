@@ -1,28 +1,20 @@
+#include "globals.h"
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fstream>         
+#include <fstream>
 #include <iostream>
 
-#include "globals.h"
+// <<<<<<<< THREAD GLOBALS >>>>>>>>
+ pthread_mutex_t mutex_deck_availability_to_player = PTHREAD_MUTEX_INITIALIZER;
+ pthread_cond_t cond_deck_availability = PTHREAD_COND_INITIALIZER;
+ pthread_mutex_t mutex_deck_availability_to_dealer = PTHREAD_MUTEX_INITIALIZER;
+ pthread_cond_t cond_winner_found = PTHREAD_COND_INITIALIZER;
 
-#define NUM_THREADS 3      // number of player threads 
-#define NUM_CARDS 52       // number of cards
-
-// THREAD GLOBALS
- pthread_mutex_t mutex_useDeck = PTHREAD_MUTEX_INITIALIZER;
- pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
- pthread_mutex_t mutex_dealerExit = PTHREAD_MUTEX_INITIALIZER;
- pthread_cond_t cond_win1 = PTHREAD_COND_INITIALIZER;
- pthread_t playerThreads[NUM_THREADS];
- pthread_t dealerThread;
-
-// OTHER GLOBALS
- FILE * pFile;              // point to ext file for the log
- int roundNum = 1;          // keep track of which round it is
- int numberOfRounds = 3;    // select how many rounds to play
- int some_value = 1;        // TESTING ONLYxxxxxxxxxxxxxxxxxxxxxxx  
- int turn = 0;              // keep track of whose turn it is
- int seed = 0;              // the seed for rand() passed from command line   
- bool win = false;          // flag to indicate a player has won
- long pId = 0;              // identify the player
+// <<<<<<<< GAME GLOBALS >>>>>>>>
+ FILE * log_file;
+ int seed = 0;
+ int which_player = 1;
+ int current_round = 1;
+ bool winner_found = false;

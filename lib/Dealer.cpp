@@ -2,97 +2,58 @@
 
 using namespace std;
 
-Dealer::Dealer(Deck &cards, Player &player_1, Player &player_2, Player &player_3) : card_deck(cards), player1(player_1), player2(player_2), player3(player_3) {}
+// <<<<<<<< constructor >>>>>>>>
+Dealer::Dealer(Deck &cards, Player &player_1, Player &player_2, Player &player_3) : 
+  card_deck(cards), player1(player_1), player2(player_2), player3(player_3) {} // end constructor
 
+// <<<<<<<< run >>>>>>>>
 void Dealer::run() {
-   pId = 0;       // identify the dealer as player 0
-   
-   accessDeck();
+  access_deck();
 
-   // leave the dealer thread
-   pthread_mutex_lock(&mutex_dealerExit);  // lock the exit ............
-      while( !win ) {
-         pthread_cond_wait(&cond_win1, &mutex_dealerExit);
-      }      
-   pthread_mutex_unlock(&mutex_dealerExit); // unlock the exit .........
-   
-   fprintf(pFile, "DEALER: exits round\n");  
+  pthread_mutex_lock( &mutex_deck_availability_to_dealer );
+  while( !winner_found ) { pthread_cond_wait( &cond_winner_found, &mutex_deck_availability_to_dealer ); }      
+  pthread_mutex_unlock( &mutex_deck_availability_to_dealer );
+  
+  pthread_exit( NULL );
+} // end run
 
-   pthread_exit(NULL);  
-}
+// <<<<<<<< access_deck >>>>>>>>
+void Dealer::access_deck() {
+  shuffle_deck();
+  deal_cards();
 
-void Dealer::accessDeck() {
-  shuffleCards();
-  dealCards();
+  pthread_cond_broadcast( &cond_deck_availability );
+} // end access_deck
 
-  pthread_cond_broadcast(&condition_var); // inform that deck is available
-}
+// <<<<<<<< shufflfe_deck >>>>>>>>
+void Dealer::shuffle_deck() {
+  fprintf(log_file, "DEALER: shuffle\n"); 
 
-void Dealer::shuffleCards() {
-  fprintf(pFile, "DEALER: shuffle\n"); // shuffle the deck
-
-  // int size = card_deck.size();
-  for( int i = 0; i < NUM_CARDS; ++i ) {
-    int randomIndex = rand() % NUM_CARDS;
+  for( int i = 0; i < NUMBER_OF_CARDS; ++i ) {
+    int randomIndex = rand() % NUMBER_OF_CARDS;
     int temp = card_deck.get( i ); 
     card_deck.set( i, card_deck.get(randomIndex) );
     card_deck.set( randomIndex, temp );
   }
 
-  card_deck.showDeck();
-}
+  card_deck.print_deck();
+} // end shuffle_deck
 
-void Dealer::dealCards() {
-  fprintf(pFile, "DEALER: deal\n");      // deal the cards
-  printf("DEALER: deal\n");      // deal the cards
+// <<<<<<<< deal_cards >>>>>>>>
+void Dealer::deal_cards() {
+  if( which_player == 1 ) { 
+    player1.set_hand( card_deck.pop() );
+    player2.set_hand( card_deck.pop() );
+    player3.set_hand( card_deck.pop() ); 
 
-  if( turn == 1) { 
-    player1.setHand( card_deck.pop() );
-    printf("\n\n\n");
-    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player1.getID(), player1.getHand());
-    printf("\n\n\n");
-
-    player2.setHand( card_deck.pop() );
-     printf("\n\n\n");
-    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player2.getID(), player2.getHand());
-    printf("\n\n\n");
-
-    player3.setHand( card_deck.pop() ); 
-    printf("\n\n\n");
-    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player3.getID(), player3.getHand());
-    printf("\n\n\n");
-
-  } else if( turn == 2 ) {
-    player2.setHand( card_deck.pop() );
-    printf("\n\n\n");
-    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player2.getID(), player2.getHand());
-    printf("\n\n\n");
-
-    player3.setHand( card_deck.pop() ); 
-    printf("\n\n\n");
-    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player3.getID(), player3.getHand());
-    printf("\n\n\n");
-
-    player1.setHand( card_deck.pop() );
-    printf("\n\n\n");
-    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player1.getID(), player1.getHand());
-    printf("\n\n\n");
+  } else if( which_player == 2 ) {
+    player2.set_hand( card_deck.pop() );
+    player3.set_hand( card_deck.pop() ); 
+    player1.set_hand( card_deck.pop() );
 
   } else {
-    player3.setHand( card_deck.pop() ); 
-    printf("\n\n\n");
-    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player3.getID(), player3.getHand());
-    printf("\n\n\n"); 
-
-    player1.setHand( card_deck.pop() );
-    printf("\n\n\n");
-    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player1.getID(), player1.getHand());
-    printf("\n\n\n");
-    
-    player2.setHand( card_deck.pop() );
-    printf("\n\n\n");
-    printf("DEAL CARDS --- PLAYER %d: hand %d\n", player2.getID(), player2.getHand());
-    printf("\n\n\n");
+    player3.set_hand( card_deck.pop() ); 
+    player1.set_hand( card_deck.pop() );
+    player2.set_hand( card_deck.pop() );
   }
-
-}
+} // end deal_cards

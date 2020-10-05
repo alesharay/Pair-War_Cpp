@@ -8,15 +8,12 @@
 
 using namespace std;
 
-class pthreads_Class {
+class pthreads_class {
   
   public:
-    pthreads_Class();
-
-    virtual ~pthreads_Class();
-
+    pthreads_class();
+    virtual ~pthreads_class();
     bool start_thread();
-
     void wait();
 
   protected:
@@ -24,6 +21,6 @@ class pthreads_Class {
 
   private:
     static void * run_helper(void * This);
-
     pthread_t thread;
+    
 };
